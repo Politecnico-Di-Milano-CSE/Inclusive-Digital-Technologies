@@ -15,6 +15,7 @@ var sketch = function (p) {
   };
 
   p.draw = function () {
+
     p.eyes.forEach((eye) => {
       eye.updateFocus()
       eye.eyeTrack();
@@ -52,40 +53,15 @@ var sketch = function (p) {
     }
 
     eyeTrack() {
-      console.log("Eye Location is: " + tail_x + ", " + tail_y + "      Pupil location is: " + this.pX + ", " + this.pY + "      Want to go to location: " + this.target_x + ", " + this.target_y)
-      if (this.target_x == 0 && this.target_y == 0) {
-        this.pX = 100;
-        this.pY = 50;
-      }
+      console.log("Eye Location is: " + tail_x + ", " + tail_y + "      Pupil location is: " + this.pX + ", " + this.pY + "      Want to go to location: " + this.target_x + ", " + this.target_y);
 
-      // If the target is right on top of the eye
-      if (p.dist(this.target_x, this.target_y, this.x, this.y) <= this.eyeSize / 4) {
-        this.pX = this.target_x;
-        this.pY = this.target_y;
-      } else {
-
-        if(this.target_x < tail_x + 50 && this.target_x - 50){
-          this.pX = 100;
-        } else{
-          if (this.target_x < tail_x && this.pX < 125) {
-            this.pX += 1;
-          }
-          if (this.target_x > tail_x && this.pX > 75) {
-            this.pX -= 1;
-          }
-        }
-        
-
-        if(this.target_y > tail_y && this.pY < 75){
-              this.pY += 1;
-        }
-        if(this.target_y < tail_y && this.pY > 40){
-              this.pY -= 1;
-        }
-      } 
-
-    }
-    
+      let radius = 20;
+      let angle = Math.atan2(this.target_y - tail_y, this.target_x - tail_x);
+      
+      this.pX = 100 + radius * Math.cos(angle);
+      this.pY = 50 + radius * Math.sin(angle);
+  }
+  
     updateFocus(){
       this.target_x = focus_x;
       this.target_y = focus_y;
@@ -101,22 +77,19 @@ function getFocusCoordinates() {
 
   // Check if there's a focused element
   if (focusedElement) {
-      // Get the position of the focused element relative to the viewport
       var rect = focusedElement.getBoundingClientRect();
       
-      // Calculate x-y coordinates relative to the viewport
-      var x = rect.left + window.scrollX;
-      var y = rect.top + window.scrollY;
+      var x = rect.left + window.scrollX + rect.width / 2;
+      var y = rect.top + window.scrollY + rect.height / 2;
 
       focus_x = x;
       focus_y = y;
 
-      // Print the coordinates
-      console.log("X: " + x + ", Y: " + y);
   } else {
       console.log("No element is currently focused.");
   }
 }
+
 
 let focus_x = 0;
 let focus_y = 0;

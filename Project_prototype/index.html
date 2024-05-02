@@ -32,6 +32,14 @@
       src="https://via.placeholder.com/800x600/"
       alt="This is some alt text"
     />
+
+    <script>
+      var elements = document.querySelectorAll('*');
+      elements.forEach(function(element) {
+          element.setAttribute('tabindex', '0');
+      });
+    </script>
+
     <div id="tail"><div class="child" id="sketch1" onclick="location.href='http://www.breadsnake.com/contact';"></div></div>
     <script src=".\scetch.js"></script>
 
