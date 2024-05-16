@@ -1,0 +1,26 @@
+{
+    "manifest_version": 3,
+    "name": "Custom Eye Tracking Arrow",
+    "version": "1.0",
+    "description": "Simulates eye tracking with a customizable arrow",
+    "content_scripts": [
+      {
+        "matches": ["http://localhost:8000/"],
+        "js": ["content.js"]
+      }
+    ],
+    "permissions": ["storage",
+    "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"
+    ],
+
+    "background": {
+        "service_worker": "background.js"
+    },
+    "action": {
+      "default_popup": "options.html"
+    },
+    "content_security_policy": {
+      "extension_pages": "script-src 'self'; object-src 'self'",
+      "sandbox": "sandbox allow-scripts"
+    }
+  }
