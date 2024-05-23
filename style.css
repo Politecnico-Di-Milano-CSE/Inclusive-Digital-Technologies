@@ -1,0 +1,32 @@
+/* For best practice, move CSS below to an external CSS file. */
+body {
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+}
+
+h1{
+    text-align: center;
+}
+
+p{
+    text-align: center;
+}
+
+.nav {
+  overflow: hidden;
+  float: none;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.nav a {
+  float: left;
+  margin: 10px;
+  display: block;
+}
+
+.nav #menu-toggle {
+  display: none;
+}
