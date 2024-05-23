@@ -1,4 +1,3 @@
-// Runs in the background as a link between extension and site
 
 chrome.action.onClicked.addListener((tab) => {
   chrome.scripting.executeScript({

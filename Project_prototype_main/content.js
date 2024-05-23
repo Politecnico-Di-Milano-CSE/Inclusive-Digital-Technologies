@@ -4,6 +4,7 @@ tailDiv.class = "child";
 tailDiv.id = "tailDiv";
 document.body.appendChild(tailDiv);
 
+// Change some of its settings
 const tail = document.getElementById("tailDiv");
 let tail_x = 0;
 let tail_y = 0;
@@ -22,6 +23,8 @@ document.addEventListener("mousemove", function (event) {
 });
 
 // Getting focus coordinates
+let focus_x = 0;
+let focus_y = 0;
 function getFocusCoordinates() {
   // Get the currently focused element
   var focusedElement = document.activeElement;
@@ -38,11 +41,9 @@ function getFocusCoordinates() {
   }
 }
 
-let focus_x = 0;
-let focus_y = 0;
-
 getFocusCoordinates();
 
+// Get new focus when focus changes
 document.addEventListener("focusin", function () {
   getFocusCoordinates();
 });
@@ -55,11 +56,11 @@ document.addEventListener("focusin", function () {
   document.addEventListener("click", function () {
     getFocusCoordinates();
   });
-  */
+*/
 
 // Main code controlling arrow
+let arrow_color = "#C83C14";
 var sketch = function (p) {
-  let arrow_color = p.color(200, 60, 20);
   let arrow;
   p.setup = function () {
     let canvas = p.createCanvas(200, 200);
@@ -85,7 +86,7 @@ var sketch = function (p) {
     show() {
       p.rectMode(p.CENTER);
       p.translate(p.width / 2, p.height / 2);
-      p.fill(arrow_color);
+      p.fill(p.color(arrow_color));
       p.rotate(this.angle + p.PI / 2);
       p.noStroke();
 
@@ -104,15 +105,14 @@ var sketch = function (p) {
   };
 };
 
-// Make sure p5.js is loaded before executing sketch
 let myp5 = new p5(sketch);
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === "updateSize") {
     // Update the arrow size
-    document.getElementById("custom-div").style.fontSize = message.size + "px";
+    console.log("not implemented yet...");
   } else if (message.action === "updateColor") {
     // Update the arrow color
-    document.getElementById("custom-div").style.color = message.color;
+    arrow_color = message.color;
   }
 });
