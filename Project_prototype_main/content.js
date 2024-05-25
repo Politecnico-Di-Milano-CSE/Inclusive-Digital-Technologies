@@ -12,12 +12,13 @@ tail.style.position = "fixed";
 tail.style.width = "10px";
 tail.style.height = "10px";
 tail.style.pointerEvents = "none";
+tail.style.zIndex = 999;
 
 // Update tail position on mousemove event
 document.addEventListener("mousemove", function (event) {
   // Set tail position to mouse coordinates
   tail_x = event.pageX;
-  tail_y = event.pageY;
+  tail_y = event.pageY - window.scrollY;
   tail.style.left = tail_x - 100 + "px";
   tail.style.top = tail_y - 100 + "px";
 });
@@ -37,7 +38,7 @@ function getFocusCoordinates() {
     var y = rect.top + window.scrollY + rect.height / 2;
 
     focus_x = x;
-    focus_y = y;
+    focus_y = y - window.scrollY;
   }
 }
 
@@ -45,6 +46,10 @@ getFocusCoordinates();
 
 // Get new focus when focus changes
 document.addEventListener("focusin", function () {
+  getFocusCoordinates();
+});
+
+document.addEventListener("scroll", function () {
   getFocusCoordinates();
 });
 
@@ -59,7 +64,10 @@ document.addEventListener("focusin", function () {
 */
 
 // Main code controlling arrow
+let arrow_show = true;
 let arrow_color = "#C83C14";
+let arrow_scale = 1.0;
+
 var sketch = function (p) {
   let arrow;
   p.setup = function () {
@@ -71,9 +79,11 @@ var sketch = function (p) {
 
   p.draw = function () {
     p.clear();
-    arrow.updateFocus();
-    arrow.eyeTrack();
-    arrow.show();
+    if (arrow_show) {
+      arrow.updateFocus();
+      arrow.eyeTrack();
+      arrow.show();
+    }
   };
 
   p.Arrow = class {
@@ -109,10 +119,12 @@ let myp5 = new p5(sketch);
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === "updateSize") {
-    // Update the arrow size
-    console.log("not implemented yet...");
+    console.log(message.size);
+    arrow_scale = message.size;
   } else if (message.action === "updateColor") {
     // Update the arrow color
     arrow_color = message.color;
+  } else if (message.action === "showArrow") {
+    arrow_show = message.setting;
   }
 });
