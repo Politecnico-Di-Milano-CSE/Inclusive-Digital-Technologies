@@ -19,8 +19,8 @@ document.addEventListener("mousemove", function (event) {
   // Set tail position to mouse coordinates
   tail_x = event.pageX;
   tail_y = event.pageY - window.scrollY;
-  tail.style.left = tail_x - 100 + "px";
-  tail.style.top = tail_y - 100 + "px";
+  tail.style.left = tail_x - 400 + "px";
+  tail.style.top = tail_y - 400 + "px";
 });
 
 // Getting focus coordinates
@@ -71,7 +71,7 @@ let arrow_scale = 1.0;
 var sketch = function (p) {
   let arrow;
   p.setup = function () {
-    let canvas = p.createCanvas(200, 200);
+    let canvas = p.createCanvas(800, 800);
     canvas.parent("tailDiv");
     arrow = new p.Arrow();
     p.angleMode(p.RADIANS);
@@ -96,10 +96,10 @@ var sketch = function (p) {
     show() {
       p.rectMode(p.CENTER);
       p.translate(p.width / 2, p.height / 2);
-      p.fill(p.color(arrow_color));
+      p.scale(arrow_scale);
       p.rotate(this.angle + p.PI / 2);
+      p.fill(p.color(arrow_color));
       p.noStroke();
-
       p.rect(0, 0, 7, 80);
       p.triangle(-10, -40, 0, -60, 10, -40);
     }
@@ -119,8 +119,7 @@ let myp5 = new p5(sketch);
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === "updateSize") {
-    console.log(message.size);
-    arrow_scale = message.size;
+    arrow_scale = 1 + (message.size - 1) * 0.0303;
   } else if (message.action === "updateColor") {
     // Update the arrow color
     arrow_color = message.color;
