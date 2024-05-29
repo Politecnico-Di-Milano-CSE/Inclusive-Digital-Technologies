@@ -6,22 +6,37 @@
     <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
-    <button id="close_extension">
-      <img src="images/close.png" alt="Close" />
-    </button>
-    <h1>Adjust Arrow Settings</h1>
-    <div class="arrow_size">
-      <h2 id="size-label" for="arrow-size">Size:</h2>
-      <div class="size_radio"></div>
-      <input type="radio" id="small-size" name="arrow-size" value="small" />
-      <label for="small-size">Small</label>
-      <input type="radio" id="medium-size" name="arrow-size" value="medium" />
-      <label for="medium-size">Medium</label>
-      <input type="radio" id="big-size" name="arrow-size" value="big" />
-      <label for="big-size">Big</label>
+    <div class="header">
+      <h1>Adjust Arrow Settings</h1>
+      <button id="close_extension">
+        <img src="images/close.png" alt="Close" />
+      </button>
     </div>
-    <div>
-      <h2 id="color-label" for="arrow-color">Color:</h2>
+
+    <div class="arrow_size">
+      <h2 id="size-label" for="arrow-size">Size</h2>
+      <div class="radiobuttons">
+        <div class="radiocontain">
+          <input type="radio" id="small-size" name="arrow-size" value="small" />
+          <label for="small-size">Small</label>
+        </div>
+        <div class="radiocontain">
+          <input
+            type="radio"
+            id="medium-size"
+            name="arrow-size"
+            value="medium"
+          />
+          <label for="medium-size">Medium</label>
+        </div>
+        <div class="radiocontain">
+          <input type="radio" id="big-size" name="arrow-size" value="big" />
+          <label for="big-size">Big</label>
+        </div>
+      </div>
+    </div>
+    <div class="color">
+      <h2 id="color-label" for="arrow-color">Color</h2>
       <input type="color" id="arrow-color" name="arrow-color" />
     </div>
     <script src="popup.js"></script>

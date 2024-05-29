@@ -3,8 +3,6 @@ if (!document.getElementById("tailDiv")) {
   let arrow_scale = "medium";
 
   chrome.storage.sync.get(["scale", "color"], (result) => {
-    console.log(result.scale, result.color);
-
     arrow_color = result.color || "#C83C14";
 
     if(result.scale === "small"){
@@ -16,7 +14,7 @@ if (!document.getElementById("tailDiv")) {
     }
 
     if(result.scale === "big"){
-      arrow_scale = 1 + (65 - 1) * 0.0303;
+      arrow_scale = 1 + (60 - 1) * 0.0303;
     }
   });
 
@@ -34,7 +32,7 @@ if (!document.getElementById("tailDiv")) {
   tail.style.width = "10px";
   tail.style.height = "10px";
   tail.style.pointerEvents = "none";
-  tail.style.zIndex = 999;
+  tail.style.zIndex = 9999999999;
 
   let lastMousePosition = { x: null, y: null };
 
@@ -179,7 +177,7 @@ if (!document.getElementById("tailDiv")) {
       }
   
       if(message.scale === "big"){
-        arrow_scale = 1 + (65 - 1) * 0.0303;
+        arrow_scale = 1 + (50 - 1) * 0.0303;
       }
 
     } else if (message.action === "updateColor") {
