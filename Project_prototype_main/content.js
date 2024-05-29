@@ -1,10 +1,23 @@
 if (!document.getElementById("tailDiv")) {
   let arrow_color = "#C83C14";
-  let arrow_scale = 1.0;
+  let arrow_scale = "medium";
 
   chrome.storage.sync.get(["scale", "color"], (result) => {
+    console.log(result.scale, result.color);
+
     arrow_color = result.color || "#C83C14";
-    arrow_scale = 1 + (result.scale - 1) * 0.0303 || 1.0;
+
+    if(result.scale === "small"){
+      arrow_scale = 1 + (1 - 1) * 0.0303;
+    }
+
+    if(result.scale === "medium"){
+      arrow_scale = 1 + (20 - 1) * 0.0303;
+    }
+
+    if(result.scale === "big"){
+      arrow_scale = 1 + (65 - 1) * 0.0303;
+    }
   });
 
   // Create the div element and set its ID
@@ -157,12 +170,21 @@ if (!document.getElementById("tailDiv")) {
 
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === "updateSize") {
-      arrow_scale = 1 + (message.size - 1) * 0.0303;
+      if(message.scale === "small"){
+        arrow_scale = 1 + (1 - 1) * 0.0303;
+      }
+  
+      if(message.scale === "medium"){
+        arrow_scale = 1 + (20 - 1) * 0.0303;
+      }
+  
+      if(message.scale === "big"){
+        arrow_scale = 1 + (65 - 1) * 0.0303;
+      }
+
     } else if (message.action === "updateColor") {
       // Update the arrow color
       arrow_color = message.color;
-    } else if (message.action === "showArrow") {
-      arrow_show = message.setting;
     }
   });
 }

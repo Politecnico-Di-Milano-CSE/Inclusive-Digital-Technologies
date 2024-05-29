@@ -1,11 +1,38 @@
+function setSize(scale) {
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    chrome.tabs.sendMessage(tabs[0].id, { action: "updateSize", scale: scale });
+  });
+  chrome.storage.sync.set({ scale: scale }, () => {
+    console.log('Size settings saved');
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  const scaleInput = document.getElementById("arrow-size");
+  const scale_small = document.getElementById("small-size");
+  const scale_medium = document.getElementById("medium-size");
+  const scale_big = document.getElementById("big-size");
   const colorInput = document.getElementById("arrow-color");
 
   // Load saved settings
   chrome.storage.sync.get(['scale', 'color'], (result) => {
-    scaleInput.value = result.scale || 1;
+    if(result.scale === "small"){
+      scale_small.checked = true;
+    }
+
+    if(result.scale === "medium"){
+      scale_medium.checked = true;
+    }
+
+    if(result.scale === "big"){
+      scale_big.checked = true;
+    }
     colorInput.value = result.color || "#000000";
+  });
+  
+  document.querySelectorAll('input[name="arrow-size"]').forEach(radio => {
+    radio.addEventListener('change', (event) => {
+      setSize(event.target.value);
+    });
   });
 
   // Inject p5.js and content.js if not already injected
@@ -19,21 +46,13 @@ document.addEventListener('DOMContentLoaded', () => {
         files: ["content.js"]
       }, () => {
         // Send messages to content script after it has been injected
-        chrome.tabs.sendMessage(tabs[0].id, { action: "updateSize", size: scaleInput.value });
         chrome.tabs.sendMessage(tabs[0].id, { action: "updateColor", color: colorInput.value });
       });
     });
   });
-});
 
-document.getElementById("arrow-size").addEventListener("input", function () {
-  const size = this.value;
-  console.log(size);
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    chrome.tabs.sendMessage(tabs[0].id, { action: "updateSize", size: size });
-  });
-  chrome.storage.sync.set({ scale: size }, () => {
-    console.log('Settings saved');
+  document.getElementById("close_extension").addEventListener("click", () => {
+    window.close();
   });
 });
 

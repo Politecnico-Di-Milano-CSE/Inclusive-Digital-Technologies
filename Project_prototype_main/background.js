@@ -4,7 +4,7 @@ chrome.runtime.onInstalled.addListener(() => {
     if (result.scale === undefined || result.color === undefined) {
       // Only set defaults if the settings are not already set
       chrome.storage.sync.set({ 
-        scale: result.scale !== undefined ? result.scale : 1, 
+        scale: result.scale !== undefined ? result.scale : "medium", 
         color: result.color !== undefined ? result.color : "#C83C14" 
       }, () => {
         console.log("Default settings applied.");
