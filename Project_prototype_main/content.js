@@ -1,3 +1,12 @@
+let arrow_color = "#C83C14";
+let arrow_scale = 1.0;
+
+chrome.storage.sync.get(['scale', 'color'], (result) => {
+  console.log(result.color, result.scale)
+  arrow_color = result.color || "#C83C14";
+  arrow_scale = 1 + (result.scale - 1) * 0.0303 || 1.0;
+});
+
 // Create the div element and set its ID
 const tailDiv = document.createElement("div");
 tailDiv.class = "child";
@@ -65,8 +74,7 @@ document.addEventListener("scroll", function () {
 
 // Main code controlling arrow
 let arrow_show = true;
-let arrow_color = "#C83C14";
-let arrow_scale = 1.0;
+
 
 var sketch = function (p) {
   let arrow;
