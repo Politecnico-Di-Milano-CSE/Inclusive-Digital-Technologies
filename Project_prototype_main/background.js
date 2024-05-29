@@ -13,23 +13,7 @@ chrome.runtime.onInstalled.addListener(() => {
       console.log("Settings already exist.");
     }
   });
-
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    files: ["p5.js"]
-  }, () => {
-    chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      files: ["content.js"]
-    }, () => {
-      console.log("Scripts injected into the tab.");
-    });
-  });
 });
-
-
-
-
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   if (message.action === "updateArrow") {
