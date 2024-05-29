@@ -5,15 +5,15 @@ if (!document.getElementById("tailDiv")) {
   chrome.storage.sync.get(["scale", "color"], (result) => {
     arrow_color = result.color || "#C83C14";
 
-    if(result.scale === "small"){
+    if (result.scale === "small") {
       arrow_scale = 1 + (1 - 1) * 0.0303;
     }
 
-    if(result.scale === "medium"){
+    if (result.scale === "medium") {
       arrow_scale = 1 + (20 - 1) * 0.0303;
     }
 
-    if(result.scale === "big"){
+    if (result.scale === "big") {
       arrow_scale = 1 + (60 - 1) * 0.0303;
     }
   });
@@ -65,7 +65,7 @@ if (!document.getElementById("tailDiv")) {
     getCurrentMousePositionFromStorage((position) => {
       if (position.x !== null && position.y !== null) {
         tail_x = position.x;
-        tail_y = position.y - window.scrollY;
+        tail_y = position.y;
         tail.style.left = tail_x - 400 + "px";
         tail.style.top = tail_y - 400 + "px";
         console.log(
@@ -76,8 +76,6 @@ if (!document.getElementById("tailDiv")) {
       }
     });
   }
-
-  logInitialMousePosition();
 
   // Getting focus coordinates
   let focus_x = 0;
@@ -118,7 +116,7 @@ if (!document.getElementById("tailDiv")) {
     getFocusCoordinates();
   });
 */
-
+  let show_arrow = true;
   var sketch = function (p) {
     let arrow;
     p.setup = function () {
@@ -130,9 +128,11 @@ if (!document.getElementById("tailDiv")) {
 
     p.draw = function () {
       p.clear();
-      arrow.updateFocus();
-      arrow.eyeTrack();
-      arrow.show();
+      if (show_arrow) {
+        arrow.updateFocus();
+        arrow.eyeTrack();
+        arrow.show();
+      }
     };
 
     p.Arrow = class {
@@ -163,23 +163,34 @@ if (!document.getElementById("tailDiv")) {
       }
     };
   };
-
+  logInitialMousePosition();
   let myp5 = new p5(sketch);
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'o') {
+      show_arrow = true;
+    }
+  });
+
+  document.addEventListener('keyup', (event) => {
+    if (event.key === 'o') {
+      show_arrow = false;
+    }
+  });
 
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === "updateSize") {
-      if(message.scale === "small"){
+      if (message.scale === "small") {
         arrow_scale = 1 + (1 - 1) * 0.0303;
       }
-  
-      if(message.scale === "medium"){
+
+      if (message.scale === "medium") {
         arrow_scale = 1 + (20 - 1) * 0.0303;
       }
-  
-      if(message.scale === "big"){
+
+      if (message.scale === "big") {
         arrow_scale = 1 + (50 - 1) * 0.0303;
       }
-
     } else if (message.action === "updateColor") {
       // Update the arrow color
       arrow_color = message.color;
