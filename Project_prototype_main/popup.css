@@ -32,7 +32,7 @@ h1 {
 }
 
 .header button:focus {
-  outline: 2px solid rgb(255, 43, 43); /* Blue focus indication */
+  outline: 2px solid rgb(203, 0, 0); /* Blue focus indication */
 }
 
 .header img{
